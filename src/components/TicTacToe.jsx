@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Board from './board';
-import GameOver from './gameOver';
+import Board from './board.jsx';
+import GameOver from './gameOver.jsx';
 import Reset from './Reset';
 import GameState from './GameState';
 
