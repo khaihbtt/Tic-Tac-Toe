@@ -40,15 +40,55 @@ function checkWinner(tiles, setStrikeClass, setGameState) {
 
 // Hàm AI đơn giản cho máy chơi
 function aiMove(tiles) {
+  // 1. Kiểm tra nước đi giúp AI thắng ngay lập tức
+  for (const { combo } of winningCombinations) {
+    const [a, b, c] = combo;
+    if (
+      tiles[a] === PLAYER_O && tiles[b] === PLAYER_O && tiles[c] === null
+    ) {
+      return c; // Điền ô thứ ba để thắng
+    }
+    if (
+      tiles[a] === PLAYER_O && tiles[c] === PLAYER_O && tiles[b] === null
+    ) {
+      return b;
+    }
+    if (
+      tiles[b] === PLAYER_O && tiles[c] === PLAYER_O && tiles[a] === null
+    ) {
+      return a;
+    }
+  }
+
+  // 2. Kiểm tra nước đi để chặn người chơi thắng
+  for (const { combo } of winningCombinations) {
+    const [a, b, c] = combo;
+    if (
+      tiles[a] === PLAYER_X && tiles[b] === PLAYER_X && tiles[c] === null
+    ) {
+      return c; // Chặn người chơi
+    }
+    if (
+      tiles[a] === PLAYER_X && tiles[c] === PLAYER_X && tiles[b] === null
+    ) {
+      return b;
+    }
+    if (
+      tiles[b] === PLAYER_X && tiles[c] === PLAYER_X && tiles[a] === null
+    ) {
+      return a;
+    }
+  }
+
+  // 3. Nếu không có nước thắng hoặc chặn, chọn ngẫu nhiên
   const emptyIndices = tiles.reduce((acc, tile, index) => {
     if (tile === null) acc.push(index);
     return acc;
   }, []);
 
-  // Chọn ngẫu nhiên một ô trống
-  const randomIndex = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
-  return randomIndex;
+  return emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
 }
+
 
 function TicTacToe() {
   const [tiles, setTiles] = useState(Array(9).fill(null));
